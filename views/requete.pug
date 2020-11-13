@@ -1,0 +1,79 @@
+include includes/header.pug
+main(id=task)
+    if task === 'encombrant'
+        h2 Demander l'enlèvement d'un encombrant à mon domicile
+    else if task === 'depot'
+        h2 Signaler un dépôt sauvage d'ordures sur la voie publique
+    
+    form(autocomplete='off' class='active')
+        .input-row.hidden
+            input(type='hidden' name='task' value=task)
+        .input-row
+            label(for='input-title') Intitulé
+            input(type='text' id='input-title' name='title' required maxlength='30' data-infos="Choisissez un nom concis et approprié pour l'encombrant.")
+        .input-row
+            label(for='input-description') Description
+            textarea(id='input-description' name='description' rows='3' required maxlength='5000' data-infos="Décrivez nature et dimensions de l'encombrant, problèmes et dangers éventuels.")
+        .input-row
+            label(class='upload-button main-button' for='input-image') Ajouter une photo
+                span (facultatif)
+            input(type='file' id='input-image' name='image' accept="image/*")
+        .input-row
+            input(class='main-button' type='submit' value='Etape suivante')
+
+    form(autocomplete='off')
+        button(type='button' class='main-button previous-step') Etape précédente
+        p.infos Veuillez choisir une adresse de domicile valide parmi les options proposées. Notre service est disponible uniquement pour les adresse dépendantes de Bordeaux Métropole.
+        .input-row
+            label(for='input-address') Adresse
+            input(type='text' id='input-address' name='address' required data-infos="" placeholder="")
+
+        if task === 'depot'
+            #map
+        
+        .input-row.hidden
+            input(type='text' id='input-lat' name='lat' required data-infos="" tabindex="-1")
+
+        .input-row.hidden
+            input(type='text' id='input-lng' name='lng' required data-infos="" tabindex="-1")
+
+        .input-row
+            label(for='input-addressPlus') Complement d'adresse
+                span  (facultatif)
+            input(type='text' id='input-addressPlus' name='addressPlus' data-infos="")
+
+        .input-row
+            if task === 'encombrant'
+                input(class='main-button' type='submit' value='Etape suivante')
+            else if task === 'depot'
+                input(class='main-button' type='submit' value = 'Envoyer')
+
+    if task === 'encombrant'
+        form(autocomplete='off')
+            button(type='button' class='main-button previous-step') Etape précédente
+            p.infos Veuillez choisir la date (hors week-end) à laquelle vous souhaitez que nous récuperions vos encombrants. Déposez-les sur votre trottoir la veille de notre passage ou le jour même avant 6h.
+            .input-row
+                input(type='date' id='input-date' name='date' required data-infos="")
+            .input-row
+                input(class='main-button' type='submit' value='Etape suivante')
+
+        form(autocomplete='off')
+            button(type='button' class='main-button previous-step') Etape précédente
+            p.infos Vous recevrez un e-mail contenant un lien vous permettant de modifier votre demande ultérieurement. Nous utiliserons votre numéro de téléphone pour vous contacter uniquement si necessaire.
+            .input-row
+                label(for='input-email') Adresse électronique
+                input(type='email' id='input-email' name='email' required data-infos="")
+            .input-row
+                label(for='input-phone') Numéro de téléphone
+                input(type='text' id='input-phone' name='phone' required data-infos="")
+            .input-row
+                input(class='main-button' type='submit' value='Envoyer')
+
+script(type='text/javascript' src='/js/formulaires.js')
+script(type='text/javascript' src='/js/google-map-config.js')
+script(async type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW9v4ik-x3ylxJM91bCgWBLCcc4MG6uV8&libraries=places&callback=initGoogleMaps")
+
+if task === 'encombrant'
+    script(type='text/javascript' src='https://cdn.jsdelivr.net/npm/flatpickr')
+    script(type='text/javascript' src='https://npmcdn.com/flatpickr/dist/l10n/fr.js')
+    script(type='text/javascript' src='/js/date-picker-config.js')

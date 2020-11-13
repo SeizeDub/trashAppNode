@@ -1,0 +1,113 @@
+*
+    margin: unset
+    padding: unset
+    border: unset
+    box-sizing: border-box
+    font-family: $openSans
+    color: whitesmoke
+
+html
+    overflow-y: hidden
+    height: 100vh
+
+body
+    background: whitesmoke
+    height: 100vh
+
+main
+    opacity: 0
+    padding: 40px 120px
+    background-attachment: fixed
+    height: calc(100vh - 80px)
+    animation: fadein 0.2s 0.2s ease forwards
+
+@keyframes fadein
+    0%
+        opacity: 0
+
+    100%
+        opacity: 1
+
+a
+    color: unset
+    text-decoration: unset
+    &:focus
+        outline: none
+
+ul
+    list-style: none
+    display: flex
+        
+h2  
+    font-size: 1.35rem
+    margin-bottom: 30px
+    width: min-content
+    white-space: nowrap
+    color: $mediumGreen
+    font-weight: normal
+    font-family: $openSansSemibold
+
+h3
+    color: $mediumGreen
+
+p
+    font-family: 'Montserrat'
+    color: $mediumGreen
+    line-height: 1.6rem
+    margin-bottom: 20px
+    max-width: 640px
+    font-size: 1.1rem
+
+hr
+    height: 40px
+
+.main-button
+    max-width: 600px
+    display: block
+    cursor: pointer
+    text-align: center
+    background-color: $lightGreen
+    border-radius: 8px
+    box-shadow: 0 0 8px $shadow
+    color: whitesmoke
+    font-family: $openSansSemibold
+    transition: color 0.2s ease, background-color 0.2s ease
+    padding: 15px
+    margin-bottom: 20px
+    font-size: 1.1rem
+    width:100%
+    &:hover, &:focus
+        background-color: $mediumGreen
+        box-shadow: 0 0 8px $shadow !important
+        color: whitesmoke
+    &.secondary-button
+        background-color: unset
+        border: 2px solid
+        color: $lightGreen
+        &:hover, &:focus
+            color: $mediumGreen
+
+#map
+    height: calc(100vh - 80px)
+    width: 100vw
+    max-width: 700px
+    margin-bottom: 20px
+    position: absolute
+    top: 80px
+    right: 0px
+
+#geolocation
+    background: url('/img/target.svg') no-repeat center / 60%
+    background-color: rgb(255, 255, 255)
+    border: 0px none
+    margin: 10px
+    padding: 0px
+    text-transform: none
+    cursor: pointer
+    user-select: none
+    border-radius: 2px
+    height: 40px
+    width: 40px
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px
+    overflow: hidden
+    outline: currentcolor none medium

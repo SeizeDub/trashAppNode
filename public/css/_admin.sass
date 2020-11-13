@@ -1,0 +1,114 @@
+main#admin
+    overflow-y: scroll
+    width: calc(100% - 700px)
+    
+.admin-button-row
+    display: flex
+    flex-wrap: wrap
+    margin-bottom: 20px
+    
+.admin-task-button
+    background-color: transparent
+    color: $mediumGreen
+    border: 1px solid
+    padding: 10px
+    font-size: 1rem
+    margin-right: 10px
+    cursor: pointer
+    transition: background-color 0.2s ease
+    &.active
+        background-color: $lightGreen
+        color: whitesmoke
+        border: none
+    &:focus
+        outline: none
+
+.admin-task-container
+    display: none
+    &.active
+        display: block
+
+.task-article
+    cursor: pointer
+    display: block
+    max-width: 600px
+    border-bottom: 3px solid transparent
+    background-color: rgb(240,240,240)
+    margin-bottom: 20px
+    padding: 10px
+    &:hover, &:focus
+       border-bottom-color: $lightGreen
+       background-color: rgb(235,235,235)
+    &:last-of-type
+        margin-bottom: 40px
+    h3
+        color: $mediumGreen
+        margin-bottom: 10px
+    span
+        font-size: 1.2rem
+        display: flex
+        align-items: center
+        color: $mediumGreen
+        margin-bottom: 15px
+        &.address::before
+            content: ''
+            display: inline-block
+            min-height: 2rem
+            min-width: 2rem
+            background: url('/img/location.png') no-repeat center / contain
+            margin-right: 10px
+        &.date::before
+            content: ''
+            display: inline-block
+            min-height: 2rem
+            min-width: 2rem
+            background: url('/img/calendar.png') no-repeat center / contain
+            margin-right: 10px
+        &.phoneNumber::before
+            content: ''
+            display: inline-block
+            min-height: 2rem
+            min-width: 2rem
+            background: url('/img/phone.png') no-repeat center / contain
+            margin-right: 10px
+    .details
+        // display: none
+        img
+            max-width: 100%
+            
+        .admin-actions
+            button, input
+                border-radius: unset
+                font-size: 1rem
+                color: white
+                cursor: pointer
+                background-color: $lightGreen
+                padding: 10px
+                margin-right: 5px
+                &:focus, &:hover
+                    background-color: $mediumGreen
+            form
+                margin-top: 10px
+                display: flex
+                flex-direction: column
+                textarea
+                    padding: 5px
+                    resize: none
+                    border: 1px dashed $lightGreen
+                    margin-bottom: 5px
+                input
+                    width: min-content
+                div
+                    display: flex
+                    justify-content: space-between
+    &.active .details
+        display: block
+
+#admin-login
+    h2
+        margin: auto
+        margin-bottom: 40px
+    form
+        display: flex
+        flex-direction: column
+        align-items: center

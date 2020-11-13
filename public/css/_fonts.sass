@@ -1,0 +1,16 @@
+@mixin fontFace($name)
+    @font-face
+        font-family: $name
+        src: url('../../fonts/'+$name+'.woff2') format('woff2'), url('../../fonts/'+$name+'.woff') format('woff')
+        font-weight: normal
+        font-style: normal
+        font-display: swap
+
+@include fontFace('opensans-extrabold')
+@include fontFace('opensans-bold')
+@include fontFace('opensans-semibold')
+@include fontFace('opensans-regular')
+@include fontFace('opensans-light')
+
+@include fontFace('nunito-black')
+@include fontFace('nunito-bold')

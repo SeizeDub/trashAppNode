@@ -1,0 +1,19 @@
+include includes/header.pug
+main#success
+
+    h2 Votre demande a été prise en compte.
+
+    hr
+
+    article
+        if task === 'encombrant'
+            h3 Demande d'enlèvement d'un encombrant à votre domicile
+        else if task === 'depot'
+            h3 Signalement d'un dépôt sauvage d'ordures sur la voie publique
+
+        p #{request.title}
+        p #{request.description}
+        p #{request.address.name}
+        if request.address.plus
+            p #{request.address.plus}
+        

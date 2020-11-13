@@ -1,0 +1,28 @@
+article.task-article
+    h3 #{task.title}
+    span.address #{task.address.name.replace(', France', '')} <br> #{task.address.plus ? task.address.plus : null}
+    if taskName === 'encombrant'
+        span.date Passage prévu le #{task.appointment.toLocaleDateString('fr-FR').split('-').reverse().join('/')}
+        span.phoneNumber #{task.phoneNumber}
+    else if taskName === 'depot'
+        span.date Signalé le #{task.createdAt.toLocaleDateString('fr-FR').split('-').reverse().join('/')}
+    
+    .details
+        p #{task.description}
+
+        if task.imageName !== null
+            img(src="/uploads/" + task.imageName)
+        
+        .admin-actions
+            form.active(action="")
+                textarea(name="comment" rows="2")
+                div 
+                    input(type="submit" value="Commenter")
+                    button(type="button") Supprimer
+       
+        
+
+
+        
+
+        

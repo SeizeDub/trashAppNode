@@ -1,0 +1,14 @@
+const mongoose = require('mongoose');
+
+const commentSchema = mongoose.Schema({
+    content: { type: String, required: true },
+    createdAt: { type: Date, require: true }
+});
+
+const commentModel = mongoose.model('Comment', commentSchema);
+
+exports.commentModel;
+exports.commentSchema;
+
+
+

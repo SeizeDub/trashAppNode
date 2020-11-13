@@ -1,0 +1,24 @@
+include includes/header.pug
+
+script let encombrants = !{JSON.stringify(encombrants)}
+script let depots = !{JSON.stringify(depots)}
+
+main#admin
+    #map
+
+    .admin-button-row
+        button.admin-task-button.active(data-task="encombrant") Encombrants
+        button.admin-task-button(data-task="depot") Dépôts sauvages
+
+    .admin-task-container.active
+        - var taskName = 'encombrant';
+        each task in encombrants
+            include includes/task.pug
+    .admin-task-container
+        - var taskName = 'depot';
+        each task in depots
+            include includes/task.pug
+
+script(type='text/javascript' src="/js/admin.js")
+script(async type='text/javascript' src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW9v4ik-x3ylxJM91bCgWBLCcc4MG6uV8&libraries=places&callback=initGoogleMaps")
+        

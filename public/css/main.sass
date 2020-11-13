@@ -1,0 +1,19 @@
+@import variables
+@import fonts
+@import general
+@import header
+@import sections
+@import forms
+@import datepicker
+@import admin
+
+div.pac-item 
+    cursor: pointer
+    padding: 10px
+    & *
+        font-size: 1rem
+        color: $mediumGreen
+        &.pac-matched
+            font-weight: normal
+    & > span:last-of-type
+        color: $lightGreen

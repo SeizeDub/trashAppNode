@@ -1,0 +1,36 @@
+div.flatpickr-calendar
+    width: 100%
+    background-color: whitesmoke
+    overflow: hidden
+    & *
+        font-family: 'Titillium Web' !important
+
+div.flatpickr-months
+    background-color: whitesmoke
+
+div.flatpickr-rContainer
+    margin: auto
+    background-color: whitesmoke
+
+div.flatpickr-calendar span.flatpickr-weekday
+    font-size: 1rem
+    font-weight: unset
+    color: $mediumGreen
+
+span.flatpickr-day
+    color: $mediumGreen
+
+span.flatpickr-day.selected, span.flatpickr-day.prevMonthDay.selected, span.flatpickr-day.nextMonthDay.selected
+    background-color: $lightGreen
+    border: unset
+    &:hover
+        background-color: $mediumGreen
+
+div.flatpickr-current-month span.cur-month
+    color: $mediumGreen
+    &:hover
+        background-color: whitesmoke
+
+div.flatpickr-current-month input.cur-year
+    color: $mediumGreen
+    box-shadow: unset
