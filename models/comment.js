@@ -7,8 +7,8 @@ const commentSchema = mongoose.Schema({
 
 const commentModel = mongoose.model('Comment', commentSchema);
 
-exports.commentModel;
-exports.commentSchema;
+exports.commentSchema = commentSchema;
+exports.commentModel = commentModel;
 
 
 

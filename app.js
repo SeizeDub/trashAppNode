@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
-const requestRoutes = require ('./routes/request');
 const publicRoutes = require('./routes/public');
 const adminRoutes = require('./routes/admin');
 
@@ -21,7 +20,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/request', requestRoutes);
 app.use('/admin', adminRoutes);
 app.use('/', publicRoutes);
 

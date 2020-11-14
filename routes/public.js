@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+
 const cookieParser = require('cookie-parser');
+const multer = require('../middlewares/multer-config');
 const requestController = require('../controllers/request');
 
 router.get('/', (req, res) => {
@@ -16,6 +18,8 @@ router.get('/requete/:task', (req, res) => {
 });
 
 router.get('/success', cookieParser(), requestController.displaySuccess);
+
+router.post('/request/:task/create', multer, requestController.create);
 
 router.use((req, res) => {
     res.status(404).render('404');

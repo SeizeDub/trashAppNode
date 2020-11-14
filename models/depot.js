@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const commentSchema = require('./comment');
+const Comment = require('./comment').commentSchema;
 
 const depotSchema = mongoose.Schema({
     title: { type: String, required: true, maxlength: 20},
@@ -13,7 +13,22 @@ const depotSchema = mongoose.Schema({
         plus: { type: String, maxlength: 200 }
     },
     createdAt: { type: Date, require: true },
-    comments: [commentSchema]
+    comments: [Comment]
 });
 
 module.exports = mongoose.model('Depot', depotSchema);
+
+// exports.create = (data) => {
+//     return new depotModel({
+//         title: data.title,
+//         description: data.description,
+//         imageName: data.filename,
+//         address: {
+//             name: data.address,
+//             lat: data.lat,
+//             lng: data.lng,
+//             plus: data.addressPlus || null,
+//         },
+//         createdAt: new Date()
+//     });
+// }
