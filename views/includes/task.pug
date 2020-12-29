@@ -1,4 +1,5 @@
-article.task-article
+article.task-article(data-id=task._id)
+    button.show-details +
     h3 #{task.title}
     span.address #{task.address.name.replace(', France', '')} <br> #{task.address.plus ? task.address.plus : null}
     if taskName === 'encombrant'
@@ -14,12 +15,17 @@ article.task-article
             img(src="/uploads/" + task.imageName)
         
         .admin-actions
-            form.active(action="")
+            form.active(action="" data-id=task._id)
                 textarea(name="comment" rows="2")
                 div 
                     input(type="submit" value="Commenter")
-                    button(type="button") Supprimer
-       
+                    button.delete-request(type="button" data-id=task._id) Supprimer
+        .comments
+            each comment in task.comments
+                article.comment(data-commentid=comment._id)
+                    button.delete-comment(data-id=task._id data-commentid=comment._id) X
+                    span.commentDate #{comment.createdAt.toLocaleDateString('fr-FR').split('-').reverse().join('/') + ' à ' + comment.createdAt.toLocaleTimeString('fr-FR').split(':').slice(0,-1).join('h')}
+                    p #{comment.content}
         
 
 

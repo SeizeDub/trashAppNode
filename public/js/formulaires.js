@@ -141,14 +141,19 @@ function multipartHeaders() {
 }
 
 async function sendRequest() {
-    let response = await fetch('/api/request/create', {method: 'POST', body: requestBody});
+    let response = await fetch('/request/create', {method: 'POST', body: requestBody});
     response = await response.json();
     if (response.message === 'success') {
         window.location.replace('/success');
         return;
     }
-    if (response.error) return console.log(response.error);
-    //handle later
+    if (response.error) {
+        errorHandler(error);
+    }
+}
+
+function errorHandler(error) {
+    displayError(document.getElementsByTagName('input')[document.getElementsByTagName('input').length - 1], 'Une erreur est survenue.')
 }
 
 document.getElementsByTagName('input')[0].focus();

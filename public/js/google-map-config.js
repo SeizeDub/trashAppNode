@@ -56,9 +56,12 @@ function initMarkerListener() {
 function initMap() {
     return new google.maps.Map(document.getElementById('map'), {
         center: {lat: 44.85, lng: -0.58},
-        zoom: 14,
+        zoom: 16,
         disableDefaultUI: true,
-        fullscreenControl: true
+        fullscreenControl: true,
+        styles: {
+            
+        }
     });
 }
 

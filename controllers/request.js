@@ -1,128 +1,120 @@
-const Encombrant = require('../models/encombrant');
-const Depot = require('../models/depot');
 const jwt = require('jsonwebtoken');
+
+const Request = require('../models/request');
 const Comment = require('../models/comment').commentModel;
 
-exports.displayList = async (req, res) => {
+exports.displayAll = async (req, res) => {
     try {
-        let encombrants = await Encombrant.find({}).sort({ appointment: 'asc' }).exec();
-        let depots = await Depot.find({}).sort({ createdAt: 'asc' }).exec();
+        let encombrants = await Request.find({task: 'encombrant'}).sort({ appointment: 'asc' });
+        let depots = await Request.find({task: 'depot'}).sort({ createdAt: 'asc' });
         res.render('admin', { encombrants: encombrants, depots: depots});
     } catch {
         res.status(500).render('error');
     }
 }
 
-exports.create = async (req, res) => {
+/**
+ * @param req.body...
+ * @param req.file
+ */
+exports.createOne = async (req, res) => {
     try {
-        let task = req.params.task;
         let data = {
-            title: req.body.title,
-            description: req.body.description,
-            imageName: req.file ? req.file.filename : null,
+            task: escapeHtml(req.body.task),
+            title: escapeHtml(req.body.title),
+            description: escapeHtml(req.body.description),
+            imageName: req.file ? escapeHtml(req.file.filename) : null,
             address: {
-                name: req.body.address,
-                lat: req.body.lat,
-                lng: req.body.lng,
-                plus: req.body.addressPlus || null,
+                name: escapeHtml(req.body.address),
+                lat: parseFloat(req.body.lat),
+                lng: parseFloat(req.body.lng),
+                plus: escapeHtml(req.body.addressPlus) || null,
             },
-            createdAt: new Date()
+            createdAt: new Date(),
         };
-        let response;
-        if (task === 'encombrant') {
-            response = await Encombrant.create({ ...data });
-        } else if (task === 'depot') {
-            response = await Depot.create({ ...data });
+        if (data.task === 'encombrant') {
+            data.appointment = new Date(req.body.date);
+            data.email = escapeHtml(req.body.email);
+            data.phoneNumber = escapeHtml(req.body.phone);
         }
-        if (!response.ok) {
-            throw 'error';
-        }
-        token = jwt.sign({ task: task, requestId: request._id },'RANDOM_TOKEN_SECRET',{ expiresIn: 86400 });
-        res.cookie('token', token, { maxAge: 86400 * 1000, httpOnly: true });
+        let request = await Request.create({ ...data });
+        token = jwt.sign({ requestId: request._id },'RANDOM_TOKEN_SECRET',{ expiresIn: 600 });
+        res.cookie('token', token, { maxAge: 600 * 1000, httpOnly: true });
         res.status(201).json({ message: 'success' });
     } catch {
-        res.status(400).json({ message: 'error' });
+        res.status(500).json({ message: 'error' });
     }
 }
 
+/**
+ * @param req.cookies.token -> requestId
+ */
 exports.displaySuccess = async (req, res) => {
-    let token = req.cookies.token;
-    let decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    let requestId = decodedToken.requestId;
-    let task = decodedToken.task;
-    let request;
-    if (task === 'encombrant') {
-        request = await Encombrant.findById(requestId);
-    } else if (task === 'depot') {
-        request = await Depot.findById(requestId);
-    }
-    res.status(201).render('success', { task: task, request: request });
-}
-
-exports.delete = async (req, res) => {
     try {
-        let task = req.body.task;
-        let id = req.body.id;
-        let response;
-        if (task === 'encombrant') {
-            response = await Encombrant.deleteOne({ _id: id });
-        } else if (task === 'depot') {
-            response = await Depot.deleteOne({ _id: id })
-        }
-        if (!response.ok) {
-            throw 'error';
-        }
-        res.status(204).json({message: 'success'})
-    } catch {
-        res.status(500).json({message: 'error'});
-    }
-}
-
-exports.listTasks = async (req, res) => {
-    try {
-        let encombrants = await Encombrant.find({}).sort({ appointment: 'asc' }).exec();
-        let depots = await Depot.find({}).sort({ createdAt: 'asc' }).exec();
-        res.render('admin', { encombrants: encombrants, depots: depots});
+        let decodedToken = jwt.verify(req.cookies.token, 'RANDOM_TOKEN_SECRET');
+        let request = await Request.findById(decodedToken.requestId);
+        res.render('success', { request: request });
     } catch {
         res.status(500).render('error');
     }
 }
 
-exports.createComment = async (req, res) => {
+/**
+ * @param req.params.requestId
+ */
+exports.deleteOne = async (req, res) => {
     try {
-        let task = req.body.task;
-        let id = req.body.id;
-        let content = req.body.content;
-        let comment = new commentModel({ content: content, createdAt: new Date() });
-        let response;
-        if (task === 'encombrant') {
-            response = await Encombrant.findOne({ _id: id });
-        } else if (task === 'depot') {
-            response = await Depot.findOne({ _id: id });
+        let request = await Request.deleteOne({ _id: String(escapeHtml(req.params.requestId)) });
+        if (!request.deletedCount) {
+            throw 'error';
         }
-        response.comments.push(comment);
-        response.save();
-        res.status(204).json({message: 'success'})
+        res.status(200).json({ message: 'success' })
+    } catch {
+        res.status(500).json({ message: 'error' });
+    }
+}
+
+/**
+ * @param req.params.requestId
+ * @param req.body.commentContent
+ */
+exports.addComment = async (req, res) => {
+    try {
+        let comment = new Comment({ content: String(escapeHtml(req.body.commentContent)), createdAt: new Date() });
+        let request = await Request.updateOne({ _id: String(escapeHtml(req.params.requestId)) }, { $push: { comments: comment } });
+        if (!request.nModified) {
+            throw 'error';
+        }
+        res.status(200).json({comment: comment});
     } catch {
         res.status(500).json({message: 'error'});
     }
 }
 
+/**
+ * @param req.params.requestId
+ * @param req.params.commentId
+ */
 exports.deleteComment = async (req, res) => {
     try {
-        let task = req.body.task;
-        let id = req.body.id;
-        let commentId = req.body.commentId;
-        let response;
-        if (task === 'encombrant') {
-            response = await Encombrant.findOne({ _id: id });
-        } else if (task === 'depot') {
-            response = await Depot.findOne({ _id: id });
+        let request = await Request.updateOne({ _id: String(escapeHtml(req.params.requestId)) }, { $pull: { comments: { _id: String(escapeHtml(req.params.commentId)) } } });
+        if (!request.nModified) {
+            throw 'error';
         }
-        response.comments.filter(comment => comment._id !== commentId);
-        response.save();
-        res.status(204).json({message: 'success'})
+        res.status(200).json({message: 'success'})
     } catch {
         res.status(500).json({message: 'error'});
     }
+}
+
+function escapeHtml(text) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+    
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }

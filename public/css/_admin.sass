@@ -1,6 +1,14 @@
 main#admin
     overflow-y: scroll
-    width: calc(100% - 700px)
+    padding: 40px
+    width: 50%
+    #map
+        position: absolute
+        right: 0px
+        bottom: 0px
+        height: 100%
+        width: 50%
+        max-width: unset
     
 .admin-button-row
     display: flex
@@ -24,21 +32,24 @@ main#admin
         outline: none
 
 .admin-task-container
+    width: 100%
+    max-width: 900px
     display: none
     &.active
         display: block
 
+#admin-login h2
+    text-align: center
+
 .task-article
-    cursor: pointer
+    
+    position: relative
     display: block
-    max-width: 600px
-    border-bottom: 3px solid transparent
+    width: 100%
+    border-bottom: 3px solid $lightGreen
     background-color: rgb(240,240,240)
     margin-bottom: 20px
     padding: 10px
-    &:hover, &:focus
-       border-bottom-color: $lightGreen
-       background-color: rgb(235,235,235)
     &:last-of-type
         margin-bottom: 40px
     h3
@@ -50,6 +61,10 @@ main#admin
         align-items: center
         color: $mediumGreen
         margin-bottom: 15px
+        &.address
+            cursor: pointer
+            &:hover
+                filter: brightness(150%)
         &.address::before
             content: ''
             display: inline-block
@@ -72,11 +87,33 @@ main#admin
             background: url('/img/phone.png') no-repeat center / contain
             margin-right: 10px
     .details
-        // display: none
+        display: none
+        &.active
+            display: block !important
         img
             max-width: 100%
-            
+        .comment
+            position: relative
+            .delete-comment
+                cursor: pointer
+                background-color: $lightGreen
+                position: absolute
+                top: 5px
+                right: 5px
+                width: 30px
+                height: 30px
+                &:hover
+                    background-color: $mediumGreen
+            span
+                font-family: $openSans
+                font-size: 1rem
+                color: $lightGreen
+            margin-top: 10px
+            margin-bottom: unset
+            background-color: rgb(230,230,230)
+            padding: 5px
         .admin-actions
+            
             button, input
                 border-radius: unset
                 font-size: 1rem
@@ -94,15 +131,28 @@ main#admin
                 textarea
                     padding: 5px
                     resize: none
-                    border: 1px dashed $lightGreen
-                    margin-bottom: 5px
+                    margin-bottom: 10px
+                    &:focus
+                        box-shadow: 0 0 4px $shadow inset, 0 0 1px $lightGreen
                 input
                     width: min-content
                 div
                     display: flex
                     justify-content: space-between
-    &.active .details
-        display: block
+
+    .show-details
+        font-size: 1.5rem
+        position: absolute
+        top: 5px
+        right: 5px
+        width: 30px
+        height: 30px
+        background-color: $lightGreen
+        cursor: pointer
+        &:focus
+            outline: none
+        &:hover
+            background-color: $mediumGreen
 
 #admin-login
     h2

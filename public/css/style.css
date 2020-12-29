@@ -99,8 +99,6 @@ ul {
 h2 {
   font-size: 1.35rem;
   margin-bottom: 30px;
-  width: min-content;
-  white-space: nowrap;
   color: #337748;
   font-weight: normal;
   font-family: "opensans-semibold";
@@ -153,16 +151,6 @@ hr {
   color: #337748;
 }
 
-#map {
-  height: calc(100vh - 80px);
-  width: 100vw;
-  max-width: 700px;
-  margin-bottom: 20px;
-  position: absolute;
-  top: 80px;
-  right: 0px;
-}
-
 #geolocation {
   background: url("/img/target.svg") no-repeat center/60%;
   background-color: white;
@@ -200,6 +188,14 @@ header nav {
   height: 100%;
   font-size: 1.2rem;
   font-weight: bold;
+}
+header nav #hamburger {
+  display: none;
+  width: 50px;
+  height: 50px;
+  margin-top: 15px;
+  cursor: pointer;
+  background: url("/img/hamburger.png") no-repeat center/contain;
 }
 header nav ul {
   height: 100%;
@@ -256,6 +252,11 @@ header nav ul li a:hover, header nav ul li a:focus {
 #depot {
   background: url("/img/depot.svg") no-repeat right 40px bottom 40px/600px;
 }
+#depot #map {
+  height: 400px;
+  width: 100%;
+  max-width: 600px;
+}
 
 #success {
   background: url("/img/done.svg") no-repeat right 40px bottom 50%/650px;
@@ -269,6 +270,102 @@ header nav ul li a:hover, header nav ul li a:focus {
   margin-bottom: 20px;
 }
 
+@media screen and (max-width: 1300px) {
+  header {
+    padding: 0 80px;
+  }
+
+  main {
+    padding: 40px 80px !important;
+    background-image: none !important;
+  }
+
+  hr {
+    height: 40px !important;
+  }
+}
+@media screen and (max-width: 1000px) {
+  html, body, main {
+    overflow-y: unset;
+    height: unset;
+  }
+
+  header {
+    padding: 0 40px;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px !important;
+    background-image: none !important;
+  }
+
+  #admin {
+    width: 100% !important;
+  }
+  #admin .address:hover {
+    filter: unset !important;
+    cursor: unset !important;
+  }
+  #admin #map {
+    display: none;
+  }
+
+  h2 {
+    text-align: center !important;
+  }
+
+  hr {
+    height: 20px !important;
+  }
+}
+@media screen and (max-width: 750px) {
+  .button-row {
+    flex-direction: column;
+  }
+  .button-row .main-button {
+    margin-right: unset !important;
+  }
+}
+@media screen and (max-width: 550px) {
+  header #hamburger {
+    display: block !important;
+  }
+  header ul {
+    display: none;
+    flex-direction: column;
+    background-color: white;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    position: absolute;
+    top: 80px;
+    right: 0px;
+  }
+  header ul.active {
+    display: flex;
+  }
+
+  main {
+    padding: 40px 20px !important;
+  }
+}
+@media screen and (max-width: 350px) {
+  main {
+    padding: 20px 10px !important;
+  }
+}
+@media screen and (min-width: 1200px) {
+  #depot #map {
+    position: absolute !important;
+    height: 100%;
+    bottom: 0px;
+    right: 0px;
+    max-width: unset;
+    width: 700px;
+  }
+}
 form {
   text-align: left;
   display: none;
@@ -484,7 +581,16 @@ div.flatpickr-current-month input.cur-year {
 
 main#admin {
   overflow-y: scroll;
-  width: calc(100% - 700px);
+  padding: 40px;
+  width: 50%;
+}
+main#admin #map {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  height: 100%;
+  width: 50%;
+  max-width: unset;
 }
 
 .admin-button-row {
@@ -513,24 +619,26 @@ main#admin {
 }
 
 .admin-task-container {
+  width: 100%;
+  max-width: 900px;
   display: none;
 }
 .admin-task-container.active {
   display: block;
 }
 
+#admin-login h2 {
+  text-align: center;
+}
+
 .task-article {
-  cursor: pointer;
+  position: relative;
   display: block;
-  max-width: 600px;
-  border-bottom: 3px solid transparent;
+  width: 100%;
+  border-bottom: 3px solid #52bd74;
   background-color: #f0f0f0;
   margin-bottom: 20px;
   padding: 10px;
-}
-.task-article:hover, .task-article:focus {
-  border-bottom-color: #52bd74;
-  background-color: #ebebeb;
 }
 .task-article:last-of-type {
   margin-bottom: 40px;
@@ -545,6 +653,12 @@ main#admin {
   align-items: center;
   color: #337748;
   margin-bottom: 15px;
+}
+.task-article span.address {
+  cursor: pointer;
+}
+.task-article span.address:hover {
+  filter: brightness(150%);
 }
 .task-article span.address::before {
   content: "";
@@ -570,8 +684,38 @@ main#admin {
   background: url("/img/phone.png") no-repeat center/contain;
   margin-right: 10px;
 }
+.task-article .details {
+  display: none;
+}
+.task-article .details.active {
+  display: block !important;
+}
 .task-article .details img {
   max-width: 100%;
+}
+.task-article .details .comment {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: unset;
+  background-color: #e6e6e6;
+  padding: 5px;
+}
+.task-article .details .comment .delete-comment {
+  cursor: pointer;
+  background-color: #52bd74;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+}
+.task-article .details .comment .delete-comment:hover {
+  background-color: #337748;
+}
+.task-article .details .comment span {
+  font-family: "opensans-regular";
+  font-size: 1rem;
+  color: #52bd74;
 }
 .task-article .details .admin-actions button, .task-article .details .admin-actions input {
   border-radius: unset;
@@ -593,8 +737,10 @@ main#admin {
 .task-article .details .admin-actions form textarea {
   padding: 5px;
   resize: none;
-  border: 1px dashed #52bd74;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+.task-article .details .admin-actions form textarea:focus {
+  box-shadow: 0 0 4px #37431e2a inset, 0 0 1px #52bd74;
 }
 .task-article .details .admin-actions form input {
   width: min-content;
@@ -603,8 +749,21 @@ main#admin {
   display: flex;
   justify-content: space-between;
 }
-.task-article.active .details {
-  display: block;
+.task-article .show-details {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  background-color: #52bd74;
+  cursor: pointer;
+}
+.task-article .show-details:focus {
+  outline: none;
+}
+.task-article .show-details:hover {
+  background-color: #337748;
 }
 
 #admin-login h2 {

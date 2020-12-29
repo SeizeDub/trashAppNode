@@ -6,13 +6,13 @@ document.onsubmit = (event) => {
 
 async function sendRequest(adminPassword) {
     let response = await fetch('/admin/login', {method: 'POST', body: adminPassword});
-    // response = await response.json();
-    // if (response.message === 'success') {
-    //     window.location.replace('/admin');
-    //     return;
-    // }
-    // if (response.error) return console.log(response.error);
-    // //handle later
+    response = await response.json();
+    if (response.message === 'success') {
+        window.location.replace('/admin');
+        return;
+    } else if (response.message === 'invalid') {
+        displayError(document.getElementById('input-adminPassword'), 'Mot passe invalide.');
+    }
 }
 
 function jsonHeaders() {
