@@ -24,7 +24,7 @@
     "sass": "^1.27.0"
   },
   "scripts": {
-    "start": "npm-run-all --parallel nodemon sass browser-sync",
+    "start": "node server.js",
     "nodemon": "nodemon server",
     "sass": "sass --watch public/css/main.sass public/css/style.css",
     "browser-sync": "browser-sync start --port 1600 --proxy localhost:3000 --files '**/*.*' --no-notify --no-ui"
